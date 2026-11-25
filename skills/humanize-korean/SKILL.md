@@ -101,7 +101,7 @@ SKILL_ROOT="$(d="$(cd -P "${CLAUDE_SKILL_DIR}" && pwd)"; \
    ```
    python3 ${SKILL_ROOT}/scripts/prepare_monolith_input.py --run-dir _workspace/{run_id} --genre {genre}
    ```
-   - `--genre` 값은 영문 키: `essay | column | report | blog | abstract` (생략 시 `essay`). 장르 힌트 매핑: 칼럼→`column`, 리포트→`report`, 블로그→`blog`, 공적/기타→`essay`.
+   - `--genre` 값은 영문 키: `essay | column | report | blog | abstract` (생략 시 `essay`). 장르 힌트 매핑: 칼럼→`column`, 리포트→`report`, 블로그→`blog`, 홍보·안내·모집 문구(해요체)→`blog` (+ quick-rules 「장르 지침 — 홍보·안내·모집 문구」 적용, 새로 쓰는 글이면 `extras/skills/promo-write`), 공적/기타→`essay`.
    - `--run-dir`·`--diagnosis`의 상대 경로는 **cwd 기준**으로 해석된다(위 run_id 규칙과 동일 기준). 그 외 인자: `--text`(run-dir 없이 즉석 실행 시 새 run 디렉토리 자동 생성 — 이때는 `--session-tag {TAG}` 를 같이 준다), `--baseline`(baseline JSON 경로 override, 평소 불필요), `--diagnosis`(진단 텍스트 파일을 점수 블록 앞에 prepend — standard·heavy의 진단 결합용).
    - 산출: `00_metrics.json`(정량 점수 + **`route_hint`**) + `01_input_with_metrics.txt`(점수 블록을 원문 앞에 붙인 결합 파일).
    - **graceful degrade 내장**: metrics 계산이 실패하면 shim이 점수 블록 없이 원문만 감싼 결합 파일을 쓰고 `00_metrics.error`를 남긴다. 이 경우 route_hint 없음 → standard 경로.
